@@ -2,10 +2,22 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
+{#  *** MNG update #}
+{#  Added the following line in additon to the favicon.ico in the \static\network folder #}
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+{#  *** End #}
+
     <head>
         <title>{% block title %}Social Network{% endblock %}</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="{% static 'network/styles.css' %}" rel="stylesheet">
+
+{#  *** MNG update #}
+{#  The following block can be overridden by child templates #}
+        {% block script %}
+        {% endblock %}
+{#  *** End #}
     </head>
     <body>
 
@@ -29,6 +41,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
                     </li>
+{#                  MNG Update #}
+{#                  When the user is Authenticated, show the authentiticated_view #}
+                    <script>authenticated_view()</script>
+{#                  *** End #}
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Log In</a>
@@ -36,12 +52,18 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'register' %}">Register</a>
                     </li>
+{#                  MNG Update#}
+{#                  When the user is Unauthenticated, show the unauthenticated_view#}
+                    <script>unauthenticated_view()</script>
+{#                  *** End #}
                 {% endif %}
               </ul>
             </div>
           </nav>
-        
-        <div class="body">
+
+{#        MNG Update#}
+{#        <div class="body">#}
+        <div class="container">
             {% block body %}
             {% endblock %}
         </div>

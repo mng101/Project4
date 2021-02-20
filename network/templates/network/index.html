@@ -1,5 +1,47 @@
 {% extends "network/layout.html" %}
+{% load static %}
 
 {% block body %}
-    TODO
+       <div id="new-post-view">
+
+        {#  This view will be active only when the user is authenticated       #}
+        {#  In addition, one of the following 2 views will be active           #}
+        <h5>New Post</h5>
+        <form id="post-form">
+            <textarea class="form-control" id="post-body" placeholder="Body"></textarea>
+            <input type="submit" value="Post" onclick="post_it()" class="btn btn-primary btn-sm" />
+        </form>
+
+    </div>
+
+    {#  Note: Only one of the following 2 views will be active at a time   #}
+    {#  The all-post-view is the default view for unauthenticated users    #}
+
+    <div id="all-post-view">
+        <h5>All Posts</h5>
+    </div>
+
+    {#  The following-posts view is only active when a user is authenticated #}
+    <div id="following-post-view">
+        <h5>Following Posts</h5>
+        TODO - Add elements to display all posts from users being followed
+    </div>
+
+    {#    <div id="profile-view">#}
+    {#  The profile-view will hide all other views except the navigation bar #}
+    {#        TODO - Add elements to allow a user to create and update their profile#}
+    {#        Suggestions for inclusion in the User Profile#}
+    {#            Full Name#}
+    {#            Followers#}
+    {#            Company Name and Industry#}
+    {#            Position#}
+    {#            Areas of Expertise#}
+    {#            What you may not know about me#}
+    {#            LinkedIn profile#}
+    {#            Publications#}
+    {#    </div>#}
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/index.js' %}"></script>
 {% endblock %}

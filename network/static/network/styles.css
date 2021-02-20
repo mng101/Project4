@@ -1,0 +1,25 @@
+tml {
+  font-family: Arial, sans-serif;
+}
+
+#new-post-view {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+textarea {
+  height: 100px;
+  margin: 5px;
+  padding: 10px;
+  border: 1px solid black;
+}
+
+.posts {
+  max-height: 150px;
+  overflow-y: auto;
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid black;
+}
+
+/*# sourceMappingURL=styles.css.map */
