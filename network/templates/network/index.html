@@ -2,8 +2,14 @@
 {% load static %}
 
 {% block body %}
-       <div id="new-post-view">
 
+{#    {% if user.is_authenticated %}#}
+{#        <script>authenticated_view()</script>#}
+{#    {% else %}#}
+{#        <script>unauthenticated_view()</script>#}
+{#    {% endif %}#}
+
+    <div id="new-post-view">
         {#  This view will be active only when the user is authenticated       #}
         {#  In addition, one of the following 2 views will be active           #}
         <h5>New Post</h5>
@@ -11,7 +17,6 @@
             <textarea class="form-control" id="post-body" placeholder="Body"></textarea>
             <input type="submit" value="Post" onclick="post_it()" class="btn btn-primary btn-sm" />
         </form>
-
     </div>
 
     {#  Note: Only one of the following 2 views will be active at a time   #}
@@ -40,6 +45,7 @@
     {#            LinkedIn profile#}
     {#            Publications#}
     {#    </div>#}
+
 {% endblock %}
 
 {% block script %}

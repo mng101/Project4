@@ -28,7 +28,7 @@
               <ul class="navbar-nav mr-auto">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><strong>{{ user.username }}</strong></a>
+                        <a class="nav-link" id="username" href="#"><strong>{{ user.username }}</strong></a>
                     </li>
                 {% endif %}
                 <li class="nav-item">
@@ -41,10 +41,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
                     </li>
-{#                  MNG Update #}
-{#                  When the user is Authenticated, show the authentiticated_view #}
-                    <script>authenticated_view()</script>
-{#                  *** End #}
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Log In</a>
@@ -52,17 +48,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'register' %}">Register</a>
                     </li>
-{#                  MNG Update#}
-{#                  When the user is Unauthenticated, show the unauthenticated_view#}
-                    <script>unauthenticated_view()</script>
-{#                  *** End #}
                 {% endif %}
               </ul>
             </div>
           </nav>
 
-{#        MNG Update#}
-{#        <div class="body">#}
         <div class="container">
             {% block body %}
             {% endblock %}

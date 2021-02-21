@@ -1,6 +1,16 @@
 
 console.log('Javascript loaded');
 
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.getElementById("username") !== null) {
+        console.log("User is Authenticated");
+        authenticated_view();
+    } else {
+        console.log("User is not Authenticated");
+        unauthenticated_view();
+    }
+})
+
 // document.addEventListener('DOMContentLoaded', function() {
 //     console.log('Unauthenticated view');
 //     // For Unauthenticated users show the all-post-view and hide all others
@@ -12,12 +22,15 @@ console.log('Javascript loaded');
 // });
 
 function authenticated_view() {
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('Authenticated view');
-        document.querySelector('#new-post-view').style.display = 'block';
-        document.querySelector('#all-post-view').style.display = 'block';
-        document.querySelector('#following-post-view').style.display = 'none'
-    });
+
+    console.log('Loading Authenticated view');
+    document.querySelector('#new-post-view').style.display = 'block';
+    document.querySelector('#all-post-view').style.display = 'block';
+    document.querySelector('#following-post-view').style.display = 'none'
+
+    console.log("Reading all posts - Auth view");
+    // Show all posts
+    show_all_posts();
 }
 
 function post_it() {
@@ -49,14 +62,20 @@ function post_it() {
 }
 
 function unauthenticated_view() {
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('Unauthenticated view');
-        document.querySelector('#new-post-view').style.display = 'none';
-        document.querySelector('#all-post-view').style.display = 'block';
-        document.querySelector('#following-post-view').style.display = 'none'
-    });
 
+    console.log('Loading Unauthenticated view');
+    document.querySelector('#new-post-view').style.display = 'none';
+    document.querySelector('#all-post-view').style.display = 'block';
+    document.querySelector('#following-post-view').style.display = 'none'
+
+    console.log("Reading all posts - Unauth view");
+    // Show all posts
+    show_all_posts();
+}
+
+function show_all_posts() {
     // Fetch one page of posts
+    console.log("fetch posts");
     fetch('/allposts')
         .then(response => response.json())
         .then(data => {
@@ -69,7 +88,7 @@ function unauthenticated_view() {
 }
 
 function show_post(post) {
-    console.log('Displays Posts loaded');
+    console.log('Display Posts loaded');
 
     const element = document.createElement('div');
     element.className = 'posts';
