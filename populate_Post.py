@@ -15,10 +15,10 @@ import random
 fake = Faker()
 
 # Get the list of usernames from the User object
-names = User.objects.values_list('username')
+names = User.objects.values_list('username', flat=True).exclude(username='mahesh')
 
 def get_user():
-    user = User.objects.get(username=random.choice(names)[0])
+    user = User.objects.get(username=random.choice(names))
     return user
 
 def populate(count):
@@ -39,5 +39,5 @@ def populate(count):
 
 if __name__ == '__main__':
     print("Populating the databases...Please Wait")
-    populate(200)
+    populate(180)
     print('Populating Complete')

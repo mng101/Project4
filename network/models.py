@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils import timezone
 
 
 class User(AbstractUser):
@@ -11,7 +12,8 @@ class Post(models.Model):
     # The timestamp is automatically set when a new Post is created, and must not be
     # updated when a Post itself is updated, or when users "like" and "unlike" a Post
     #
-    timestamp = models.DateTimeField(auto_now_add=True)
+    # timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(default=timezone.now)
     body = models.TextField(blank=False)
     likes = models.IntegerField(default=0)
     unlikes = models.IntegerField(default=0)
