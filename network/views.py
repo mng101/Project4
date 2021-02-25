@@ -11,9 +11,10 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import User, Post
 
-
-def index(request):
-    return render(request, "network/index.html")
+# The original index view is merged with the "allpost" view
+#
+# def index(request):
+#     return render(request, "network/index.html")
 
 
 def login_view(request):
@@ -67,12 +68,12 @@ def register(request):
     else:
         return render(request, "network/register.html")
 
-# APIs Added
+# APIs Added to the original distribution code
 
 @csrf_exempt
 @login_required
 def newpost(request):
-    # Composing a new POst must be via POST
+    # Composing a new Post must be via POST
     if request.method != "POST":
         return JsonResponse({"error": "POST request required."}, status=400)
 
@@ -81,6 +82,8 @@ def newpost(request):
     data = json.loads(request.body)
 
     # Compile the Post object and save to database
+    # The timestamp will be automatically created ONLY when the Post is created
+    #
     post = Post(
         user=request.user,
         body=data.get("body")
@@ -89,22 +92,27 @@ def newpost(request):
 
     return JsonResponse({"message": "Post successful." }, status=201)
 
+# Views added to the original distribution code
 
-def allposts(request):
+def index(request):
     all_posts = Post.objects.all().order_by('-timestamp')
 
     paginator = Paginator(all_posts, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
-    page = request.GET.get('page', 1)
+    # try:
+    #     posts = paginator.page(page)
+    # except PageNotAnInteger:
+    #     posts = paginator.page(1)
+    # except EmptyPage:
+    #     posts = paginator.page(paginator.num_pages)
 
-    try:
-        posts = paginator.page(page)
-    except PageNotAnInteger:
-        posts = paginator.page(1)
-    except EmptyPage:
-        posts = paginator.page(paginator.num_pages)
+    # Not using Javascript to render the Posts
+    #
+    # return JsonResponse([post.serialize() for post in posts], safe=False)
 
-    return JsonResponse([post.serialize() for post in posts], safe=False)
+    return render(request, 'network/index.html', {'page_obj': page_obj})
 
 # class ProfileCreateView(LoginRequiredMixin, CreateView):
 #     model = Profile

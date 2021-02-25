@@ -3,12 +3,6 @@
 
 {% block body %}
 
-{#    {% if user.is_authenticated %}#}
-{#        <script>authenticated_view()</script>#}
-{#    {% else %}#}
-{#        <script>unauthenticated_view()</script>#}
-{#    {% endif %}#}
-
     <div id="new-post-view">
         {#  This view will be active only when the user is authenticated       #}
         {#  In addition, one of the following 2 views will be active           #}
@@ -24,6 +18,59 @@
 
     <div id="all-post-view">
         <h5>All Posts</h5>
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+{#                    <a href="?page=1">&laquo; first</a>#}
+{#                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>#}
+                    <a class="btn btn-primary btn-sm" href="?page={{ page_obj.previous_page_number }}">Previous Page</a>
+                {% endif %}
+
+                {% for post in page_obj %}
+                <div class="posts">
+                    {% if post.user.username == user.username %}
+                        <div class="match">
+                            <table class = "table table-sm">
+                            <tr>
+                                <td width="40%"><b>{{ post.user.first_name }} {{ post.user.last_name }}</b></td>
+                                <td width="30%"><img src="{% static 'like-128.jpg' %}"> &nbsp {{ post.likes }}</td>
+                                <td width="30%"><span style="float: right">{{ post.timestamp }}</span></td>
+                            </tr>
+                            </table>
+                            {{ post.body }}
+                        </div>
+                    {% else %}
+                            <table class = "table table-sm">
+                            <tr>
+                                <td width="40%"><b>{{ post.user.first_name }} {{ post.user.last_name }}</b></td>
+                                <td width="30%"><img src="{% static 'like-128.jpg' %}"> &nbsp {{ post.likes }}</td>
+                                <td width="30%"><span style="float: right">{{ post.timestamp }}</span></td>
+                            </tr>
+                            </table>
+                            {{ post.body }}
+                    {% endif %}
+
+{#                        {% if post.user.username == user.username  %}#}
+{#                            <div id="match"></div>#}
+{#                            <br>#}
+{#                            {{ post.user.username }} {{ user.username }}#}
+{#                            <script>highlight_post(this)</script>#}
+{#                        {% endif %}#}
+
+                </div>
+                {% endfor %}
+
+{#                <span class="current">#}
+{#                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.#}
+{#                </span>#}
+
+                {% if page_obj.has_next %}
+{#                    <a href="?page={{ page_obj.next_page_number }}">next</a>#}
+{#                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>#}
+                    <a class="btn btn-primary btn-sm" href="?page={{ page_obj.next_page_number }}">Next Page</a>
+                {% endif %}
+            </span>
+        </div>
     </div>
 
     {#  The following-posts view is only active when a user is authenticated #}
