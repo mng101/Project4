@@ -9,7 +9,11 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import User, Post
+from .models import User, Post, Resume
+
+from django.views.generic import (View, TemplateView, ListView,
+                                  DetailView, CreateView, DeleteView,
+                                  UpdateView, )
 
 # The original index view is merged with the "allpost" view
 #
@@ -114,18 +118,6 @@ def index(request):
 
     return render(request, 'network/index.html', {'page_obj': page_obj})
 
-# class ProfileCreateView(LoginRequiredMixin, CreateView):
-#     model = Profile
-#     form_class = ProfileForm
-#     # template_name = profile_form.html
-#
-#     login_url = 'login'
-#     '''
-#     The user will be automatically redirected to the Login view if an unautenticated
-#     user attempts to create a new Profile
-#     '''
-#
-#     def form_valid(self, form):
-#         form.instance.user_id = self.request.user
-#         form.instance.valid = True
-#         return super(ProfileCreateView, self).form_valid(form)
+class ResumeDetailView(DetailView):
+    model = Resume
+    context_object_name = "resume"

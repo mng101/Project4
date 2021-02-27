@@ -1,0 +1,40 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+  <div id="user-profile-view">
+      {#  This view will be active only when the user is authenticated       #}
+      {#  In addition, one of the following 2 views will be active           #}
+      <h5>User Profile</h5>
+
+      <table class="table table-borderless" width="75%">
+          <col style="width:25%">
+          <col style=width:50%">
+
+          <tr>
+              <td>Full Name:</td>
+              <td><b> {{ resume.user.first_name }} {{ resume.user.last_name }}</b></td>
+          </tr>
+          <tr>
+              <td>Company / Position :</td>
+            <td><b>{{ resume.company }} -- {{ resume.job }}</b></td>
+          </tr>
+{#          <tr>#}
+{#              <td>Website:</td>#}
+{#              <td>{{ resume.website }}</td>#}
+{#          </tr>#}
+          <tr>
+              <td>Narative:</td>
+              <td>{{ resume.narative }}</td>
+          </tr>
+
+      </table>
+
+  </div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/index.js' %}"></script>
+{% endblock %}

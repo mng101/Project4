@@ -35,7 +35,18 @@ class Post(models.Model):
     #         #
     #           }
 
-    # TODO - class UserProfile
+    # TODO - class UserInfo
+
+class Resume(models.Model):
+    user = models.OneToOneField("User", on_delete=models.CASCADE,
+                                primary_key=True, related_name='details')
+    company = models.CharField(max_length=64)
+    job = models.CharField(max_length=64)
+    website = models.URLField
+    narative = models.TextField(max_length=1024)
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name} - {self.company}"
 
     # TODO - class Follower
 

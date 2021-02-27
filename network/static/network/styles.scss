@@ -54,3 +54,12 @@ td {
 .th {
     height-max: 0px;
 }
+
+// Table background even rows
+//tr:nth-child(even) {
+//  background: #eee;
+//}
+// Table backgroup odd rows
+//tr:nth-child(odd) {
+//  background: #ddd;
+//}

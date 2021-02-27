@@ -9,6 +9,8 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),
 
+    path("<int:pk>/", views.ResumeDetailView.as_view(), name="resume"),
+
     # API Routes added to the distribution code
     #
     path("newpost", views.newpost, name="newpost"),
