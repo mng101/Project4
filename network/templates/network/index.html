@@ -6,7 +6,7 @@
   <div id="new-post-view">
     {#  This view will be active only when the user is authenticated       #}
     {#  In addition, one of the following 2 views will be active           #}
-    <h5>New Post</h5>
+    <h6>New Post</h6>
     <form id="post-form">
         <textarea class="form-control" id="post-body" placeholder="Body"></textarea>
         <input type="submit" value="Post" onclick="post_it()" class="btn btn-primary btn-sm" />
@@ -17,13 +17,16 @@
     {#  The all-post-view is the default view for unauthenticated users    #}
 
     <div id="all-post-view">
-      <h5>All Posts</h5>
+      <h6>All Posts</h6>
         <div class="pagination">
           <span class="step-links">
             {% if page_obj.has_previous %}
 {#            <a href="?page=1">&laquo; first</a>#}
 {#            <a href="?page={{ page_obj.previous_page_number }}">previous</a>#}
-              <a class="btn btn-primary btn-sm" href="?page={{ page_obj.previous_page_number }}">Previous Page</a>
+              <span style="float: right">
+                <a class="btn btn-primary btn-sm" href="?page={{ page_obj.previous_page_number }}">Previous Page</a>
+              </span>
+              <br>
             {% endif %}
 
             {% for post in page_obj %}
@@ -70,14 +73,16 @@
             </div>
           {% endfor %}
 
-{#                <span class="current">#}
-{#                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.#}
-{#                </span>#}
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
 
           {% if page_obj.has_next %}
 {#          <a href="?page={{ page_obj.next_page_number }}">next</a>#}
 {#          <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>#}
-            <a class="btn btn-primary btn-sm" href="?page={{ page_obj.next_page_number }}">Next Page</a>
+            <span style="float: right">
+              <a class="btn btn-primary btn-sm" href="?page={{ page_obj.next_page_number }}">Next Page</a>
+            </span>
           {% endif %}
         </span>
       </div>

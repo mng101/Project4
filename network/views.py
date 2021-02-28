@@ -14,6 +14,7 @@ from .models import User, Post, Resume
 from django.views.generic import (View, TemplateView, ListView,
                                   DetailView, CreateView, DeleteView,
                                   UpdateView, )
+from django.views.generic.detail import SingleObjectMixin
 
 # The original index view is merged with the "allpost" view
 #
@@ -118,6 +119,22 @@ def index(request):
 
     return render(request, 'network/index.html', {'page_obj': page_obj})
 
-class ResumeDetailView(DetailView):
-    model = Resume
+class ResumeDetailView(SingleObjectMixin, ListView):
+    # model = Resume
     context_object_name = "resume"
+    paginate_by = 10
+    template_name = 'network/resume_detail.html'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object(queryset=Resume.objects.all())
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return self.object.user.posts.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['resume'] = self.object
+        return context
+
+

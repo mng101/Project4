@@ -3,33 +3,107 @@
 
 {% block body %}
 
-  <div id="user-profile-view">
-      {#  This view will be active only when the user is authenticated       #}
-      {#  In addition, one of the following 2 views will be active           #}
-      <h5>User Profile</h5>
+  <div id="user-resume-view">
+    <p><b>{{ resume.user.first_name }}'s Resume</b>
+      {% if user != resume.user %}
+        <span style="float: right">
+          <a class="btn btn-primary btn-sm mr-2" href="">Follow</a>
+          <a class="btn btn-primary btn-sm" href="">Unfollow</a>
+        </span>
+      {% endif %}
+    </p>
 
-      <table class="table table-borderless" width="75%">
-          <col style="width:25%">
-          <col style=width:50%">
-
-          <tr>
-              <td>Full Name:</td>
-              <td><b> {{ resume.user.first_name }} {{ resume.user.last_name }}</b></td>
-          </tr>
-          <tr>
-              <td>Company / Position :</td>
-            <td><b>{{ resume.company }} -- {{ resume.job }}</b></td>
-          </tr>
+    <table class="table table-borderless table-sm" width="75%">
+        <col style="width:25%">
+        <col style=width:50%">
+        <tr>
+            <td class="text-right">Full Name:</td>
+            <td><b> {{ resume.user.first_name }} {{ resume.user.last_name }}</b></td>
+        </tr>
+        <tr>
+            <td class="text-right">Company / Position :</td>
+          <td><b>{{ resume.company }} -- {{ resume.job }}</b></td>
+        </tr>
 {#          <tr>#}
 {#              <td>Website:</td>#}
 {#              <td>{{ resume.website }}</td>#}
 {#          </tr>#}
-          <tr>
-              <td>Narative:</td>
-              <td>{{ resume.narative }}</td>
-          </tr>
+        <tr>
+            <td class="text-right">Narative:</td>
+            <td>{{ resume.narative }}</td>
+        </tr>
+    </table>
+    <h6>Follows: xxx    Followed By: xxx  </h6>
 
-      </table>
+{#    {% if user.is_authenticated %}#}
+{#      <a class="btn btn-primary btn-sm" href="">Follow</a>#}
+{#      <a class="btn btn-primary btn-sm" href="">Unfollow</a>#}
+{#    {% endif %}#}
+
+
+    <div id="all-post-view">
+      <h6>{{ resume.user.first_name }}'s Posts</h6>
+        <div class="pagination">
+          <span class="step-links">
+            {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+              <a class="btn btn-primary btn-sm" href="?page={{ page_obj.previous_page_number }}">Previous Page</a>
+            {% endif %}
+
+            {% for post in page_obj %}
+              <div class="posts">
+                {% if post.user.username == user.username %}
+                  <div class="match">
+{#                ***                                                                         #}
+{#                class = "match" is used in the Javascript code to to identify posts         #}
+{#                by the authenticated user, and highlight the post for additional processing #}
+
+                    <table class = "table table-sm">
+                      <tr>
+                        <td width="40%"><a href="{% url 'resume' post.user.id %}">
+                          <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>
+                          </a>
+                        </td>
+                        <td width="30%"><img src="{% static 'like-128.jpg' %}"> &nbsp {{ post.likes }}</td>
+                        <td width="30%"><span style="float: right">{{ post.timestamp }}</span></td>
+                      </tr>
+                    </table>
+                    {{ post.body }}
+                  </div>
+                {% else %}
+                  <div class="nomatch">
+{#                *** Posts under this div do not belong to the authenticated user#}
+                    <table class = "table table-sm">
+                    <tr>
+                      <td width="40%"><a href="{% url 'resume' post.user.id %}">
+                        <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>
+                        </a>
+                      </td>
+                      <td width="30%"><img src="{% static 'like-128.jpg' %}"> &nbsp {{ post.likes }}</td>
+                      <td width="30%"><span style="float: right">{{ post.timestamp }}</span></td>
+                    </tr>
+                    </table>
+                    {{ post.body }}
+
+                  </div>
+                {% endif %}
+
+            </div>
+          {% endfor %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+          {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}">next</a>
+          <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            <a class="btn btn-primary btn-sm" href="?page={{ page_obj.next_page_number }}">Next Page</a>
+          {% endif %}
+        </span>
+      </div>
+    </div>
 
   </div>
 
