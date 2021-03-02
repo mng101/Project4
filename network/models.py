@@ -15,6 +15,9 @@ class Post(models.Model):
     # timestamp = models.DateTimeField(auto_now_add=True)
     timestamp = models.DateTimeField(default=timezone.now)
     body = models.TextField(blank=False)
+    #
+    # TODO - Are the following 2 fields required
+    #
     likes = models.IntegerField(default=0)
     unlikes = models.IntegerField(default=0)
 
@@ -31,11 +34,8 @@ class Post(models.Model):
     #         "user": self.user.username,
     #         "timestamp": self.timestamp.strftime("%b %d %Y, %I:%M %p %Z"),
     #         "body": self.body,
-    # TODO - add likes and Unlikes to serialize
-    #         #
-    #           }
+    #
 
-    # TODO - class UserInfo
 
 class Resume(models.Model):
     user = models.OneToOneField("User", on_delete=models.CASCADE,
@@ -48,6 +48,13 @@ class Resume(models.Model):
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name} - {self.company}"
 
-    # TODO - class Follower
 
-    # TODO - class Vote
+class Follow(models.Model):
+        user = models.ForeignKey("User", on_delete=models.CASCADE, related_name='follows')
+        follow = models.ForeignKey("User", on_delete=models.CASCADE)
+
+        def __str__(self):
+            return f"{self.user.first_name} follows {self.follow.first_name}"
+
+
+# TODO - class Vote

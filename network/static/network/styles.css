@@ -23,26 +23,35 @@ textarea {
 }
 
 .btn {
-  padding: 0px;
+  padding: 0;
 }
 
 .images img {
   height: 10px;
 }
 
-.table {
+.table1 {
   padding: 3px;
   border-collapse: collapse;
   margin-bottom: 3px;
+  table-layout: fixed;
 }
 
 td {
-  padding: 0px;
+  padding: 0;
   line-height: 1;
 }
 
 .th {
-  height-max: 0px;
+  max-height: 0;
+}
+
+#likes {
+  text-align: center;
+}
+
+#follow-btn {
+  text-align: right;
 }
 
 /*# sourceMappingURL=styles.css.map */

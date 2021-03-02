@@ -26,7 +26,7 @@ function authenticated_view() {
     console.log('Loading Authenticated view');
     document.querySelector('#new-post-view').style.display = 'block';
     document.querySelector('#all-post-view').style.display = 'block';
-    // document.querySelector('#following-post-view').style.display = 'none'
+    document.querySelector('#following-post-view').style.display = 'none'
 
     console.log("Reading all posts - Auth view");
     // Show all posts
@@ -67,7 +67,7 @@ function unauthenticated_view() {
     console.log('Loading Unauthenticated view');
     document.querySelector('#new-post-view').style.display = 'none';
     document.querySelector('#all-post-view').style.display = 'block';
-    // document.querySelector('#following-post-view').style.display = 'none'
+    document.querySelector('#following-post-view').style.display = 'none'
 
     console.log("Reading all posts - Unauth view");
     // Show all posts

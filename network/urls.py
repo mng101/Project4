@@ -14,6 +14,7 @@ urlpatterns = [
     # API Routes added to the distribution code
     #
     path("newpost", views.newpost, name="newpost"),
+    path("follower/<int:user_id>", views.follower, name="follower")
     #
     # The "allpost" view is combined into the index view
     # TODO - Cleanup before submission

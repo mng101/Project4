@@ -130,11 +130,28 @@ class ResumeDetailView(SingleObjectMixin, ListView):
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
-        return self.object.user.posts.all()
+        return self.object.user.posts.all().order_by('-timestamp')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['resume'] = self.object
         return context
 
+@csrf_exempt
+@login_required
+def follower(request, user_id):
+
+    u1 = User.objects.get(id=user_id)
+    u2 = request.user
+
+    if (u2.follow_set.filter(user=u1).count() == 0):
+        is_follower = False
+    else:
+        is_follower = True
+
+    data = {
+        'is_follower' : is_follower,
+    }
+
+    return JsonResponse(data)
 

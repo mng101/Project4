@@ -8,6 +8,7 @@
     {#  In addition, one of the following 2 views will be active           #}
     <h6>New Post</h6>
     <form id="post-form">
+      <label for="post-body"></label>
         <textarea class="form-control" id="post-body" placeholder="Body"></textarea>
         <input type="submit" value="Post" onclick="post_it()" class="btn btn-primary btn-sm" />
     </form>
@@ -16,7 +17,9 @@
     {#  Note: Only one of the following 2 views will be active at a time   #}
     {#  The all-post-view is the default view for unauthenticated users    #}
 
-    <div id="all-post-view">
+{#  <div w3-include-html="pagination.html"></div>#}
+
+  <div id="all-post-view">
       <h6>All Posts</h6>
         <div class="pagination">
           <span class="step-links">
@@ -37,32 +40,43 @@
 {#                class = "match" is used in the Javascript code to to identify posts         #}
 {#                by the authenticated user, and highlight the post for additional processing #}
 
-                    <table class = "table table-sm">
+                    <table class = "table table1 table-sm">
                       <tr>
-                        <td width="40%"><a href="{% url 'resume' post.user.id %}">
-                          <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>
-                          </a>
-                        </td>
-                        <td width="30%"><img src="{% static 'like-128.jpg' %}"> &nbsp {{ post.likes }}</td>
-                        <td width="30%"><span style="float: right">{{ post.timestamp }}</span></td>
+                          <td><a href="{% url 'resume' post.user.id %}">
+                                <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>
+                              </a>
+                          </td>
+                          <td id="likes"><img src="{% static 'like-128.jpg' %}" alt="Likes"> &nbsp {{ post.likes }}</td>
+                          <td><span style="float: right">{{ post.timestamp }}</span></td>
                       </tr>
                     </table>
                     {{ post.body }}
+
+{#                    <table class = "table table-sm">#}
+{#                      <tr>#}
+{#                        <td width="40%"><a href="{% url 'resume' post.user.id %}">#}
+{#                          <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>#}
+{#                          </a>#}
+{#                        </td>#}
+{#                        <td width="30%"><img src="{% static 'like-128.jpg' %}"> &nbsp {{ post.likes }}</td>#}
+{#                        <td width="30%"><span style="float: right">{{ post.timestamp }}</span></td>#}
+{#                      </tr>#}
+{#                    </table>#}
+{#                    {{ post.body }}#}
 
                   </div>
                 {% else %}
                   <div class="nomatch">
 {#                *** Posts under this div do not belong to the authenticated user#}
-
-                    <table class = "table table-sm">
+                    <table class = "table table1 table-sm">
                     <tr>
-                      <td width="40%"><a href="{% url 'resume' post.user.id %}">
-                        <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>
-                        </a>
-                      </td>
-{#                      <td width="40%"><b>{{ post.user.first_name }} {{ post.user.last_name }}</b></td>#}
-                      <td width="30%"><img src="{% static 'like-128.jpg' %}"> &nbsp {{ post.likes }}</td>
-                      <td width="30%"><span style="float: right">{{ post.timestamp }}</span></td>
+                        <td><a href="{% url 'resume' post.user.id %}">
+                              <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>
+                            </a>
+                        </td>
+  {#                      <td width="40%"><b>{{ post.user.first_name }} {{ post.user.last_name }}</b></td>#}
+                        <td id="likes"><img src="{% static 'like-128.jpg' %}" alt="Likes"> &nbsp {{ post.likes }}</td>
+                        <td><span style="float: right">{{ post.timestamp }}</span></td>
                     </tr>
                     </table>
                     {{ post.body }}
@@ -86,7 +100,7 @@
           {% endif %}
         </span>
       </div>
-  </div>
+        </div>
 
 {#  The following-posts view is only active when a user is authenticated #}
   <div id="following-post-view">
