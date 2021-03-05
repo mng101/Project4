@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import User, Post, Resume
+from .models import User, Post, Resume, Follow
 
 from django.views.generic import (View, TemplateView, ListView,
                                   DetailView, CreateView, DeleteView,
@@ -139,12 +139,12 @@ class ResumeDetailView(SingleObjectMixin, ListView):
 
 @csrf_exempt
 @login_required
-def follower(request, user_id):
+def is_follower(request, pk):
 
-    u1 = User.objects.get(id=user_id)
+    u1 = User.objects.get(id=pk)
     u2 = request.user
 
-    if (u2.follow_set.filter(user=u1).count() == 0):
+    if (u1.follow_set.filter(user=u2).count() == 0):
         is_follower = False
     else:
         is_follower = True
@@ -155,3 +155,39 @@ def follower(request, user_id):
 
     return JsonResponse(data)
 
+@login_required()
+def follower_count(request, pk):
+    # Return the count of followers for the user
+
+    u1 = User.objects.get(id=pk)
+    u2 = request.user
+
+    count = u1.follow_set.count()
+
+    return JsonResponse(
+        {'followers': count}
+    )
+
+@login_required()
+def toggle_follow(request, pk):
+    # Toggle the Follow button
+
+    u1 = User.objects.get(id=pk)        # Resume User
+    u2 = request.user                   # Authenticated User
+
+    # Find the follower if one exists
+    f = u1.follow_set.filter(user=u2)
+
+    # f = Follow.objects.create(user=u2, follow=u1)
+    print (f)
+
+    if (f.count() == 0):
+        # u2 does not follow u1. Create the object
+        msg = Follow.objects.create(user=u2, follow=u1)
+        print ("Object created")
+    else:
+        # u2 does follow u1. Delete the object created
+        msg = f.delete()
+
+    print(msg)
+    return JsonResponse({'message': 'Done' })

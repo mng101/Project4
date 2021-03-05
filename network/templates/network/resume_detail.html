@@ -5,26 +5,23 @@
 
   <div id="user-resume-view">
 
+{#  Table to display the Resume header   #}
   <table class="table table1 table-borderless table-sm">
     <tr>
       <td><b>{{ resume.user.first_name }}'s resume</b></td>
-      <td>Followers: </td>
-{#      <div id="follow-btn">#}
+      <td id="followers">Followers: </td>
       <td>
-{#        {% if user.is_authenticated and user != resume.user %}#}
-{#          <a class="btn btn-primary btn-sm" onclick="toggle_follow(\'' + resume.user.id + '\')">Follow</a>#}
-{#          <a class="btn btn-primary btn-sm" onclick="toggle_follow({{ resume.user.id }})">Follow</a>#}
-{#        {% endif %}#}
-{#        <input type="button" id="follow-btn", value="Follow">#}
-{#        <button onclick="toggle_follow({{ resume.user.id }})"></button>#}
-
         {% if user.is_authenticated and user != resume.user %}
           <button class="btn btn-primary btn=sm" id="follow_btn" onclick="toggle_follow({{ resume.user.id }})">Follow</button>
+          <script>set_btn_text({{ resume.user.id }})</script>
         {% endif %}
-
       </td>
-{#      </div>#}
     </tr>
+
+{#  Update the follower count     #}
+    <script>follower_count({{ resume.user.id }})</script>
+
+{#  Table to display the Resume details    #}
   </table>
 
     <table class="table table-borderless table-sm" width="75%">
@@ -38,149 +35,83 @@
             <td class="text-right">Company / Position :</td>
           <td><b>{{ resume.company }} -- {{ resume.job }}</b></td>
         </tr>
-{#          <tr>#}
-{#              <td>Website:</td>#}
-{#              <td>{{ resume.website }}</td>#}
-{#          </tr>#}
         <tr>
             <td class="text-right">Narative : </td>
             <td>{{ resume.narative }}</td>
         </tr>
     </table>
 
+{#  Display all posts associated with the Resume    #}
     <div id="all-post-view">
       <h6>{{ resume.user.first_name }}'s Posts</h6>
-{#        <div class="pagination">#}
-{#          <span class="step-links">#}
-{#            {% if page_obj.has_previous %}#}
-{#            <a href="?page=1">&laquo; first</a>#}
-{#            <a href="?page={{ page_obj.previous_page_number }}">previous</a>#}
-{#              <a class="btn btn-primary btn-sm" href="?page={{ page_obj.previous_page_number }}">Previous Page</a>#}
-{#            {% endif %}#}
-{##}
-{#            {% for post in page_obj %}#}
-{#              <div class="posts">#}
-{#                {% if post.user.username == user.username %}#}
-{#                  <div class="match">#}
-{#                ***#}
-{#                class = "match" is used in the Javascript code to to identify posts#}
-{#                by the authenticated user, and highlight the post for additional processing#}
-{##}
-{#                    <table class = "table table-sm">#}
-{#                      <tr>#}
-{#                        <td width="40%"><a href="{% url 'resume' post.user.id %}">#}
-{#                          <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>#}
-{#                          </a>#}
-{#                        </td>#}
-{#                        <td width="30%"><img src="{% static 'like-128.jpg' %}"> &nbsp {{ post.likes }}</td>#}
-{#                        <td width="30%"><span style="float: right">{{ post.timestamp }}</span></td>#}
-{#                      </tr>#}
-{#                    </table>#}
-{#                    {{ post.body }}#}
-{#                  </div>#}
-{#                {% else %}#}
-{#                  <div class="nomatch">#}
-{#                *** Posts under this div do not belong to the authenticated user#}
-{#                    <table class = "table table-sm">#}
-{#                    <tr>#}
-{#                      <td width="40%"><a href="{% url 'resume' post.user.id %}">#}
-{#                        <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>#}
-{#                        </a>#}
-{#                      </td>#}
-{#                      <td width="30%"><img src="{% static 'like-128.jpg' %}"> &nbsp {{ post.likes }}</td>#}
-{#                      <td width="30%"><span style="float: right">{{ post.timestamp }}</span></td>#}
-{#                    </tr>#}
-{#                    </table>#}
-{#                    {{ post.body }}#}
-{##}
-{#                  </div>#}
-{#                {% endif %}#}
-{##}
-{#            </div>#}
-{#          {% endfor %}#}
-{##}
-{#                <span class="current">#}
-{#                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.#}
-{#                </span>#}
-{##}
-{#          {% if page_obj.has_next %}#}
-{#          <a href="?page={{ page_obj.next_page_number }}">next</a>#}
-{#          <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>#}
-{#            <a class="btn btn-primary btn-sm" href="?page={{ page_obj.next_page_number }}">Next Page</a>#}
-{#          {% endif %}#}
-{#        </span>#}
-{#      </div>#}
       <div class="pagination">
-  <span class="step-links">
-    {% if page_obj.has_previous %}
-{#            <a href="?page=1">&laquo; first</a>#}
-{#            <a href="?page={{ page_obj.previous_page_number }}">previous</a>#}
-      <span style="float: right">
-        <a class="btn btn-primary btn-sm" href="?page={{ page_obj.previous_page_number }}">Previous Page</a>
-      </span>
-      <br>
-    {% endif %}
+        <span class="step-links">
+          {% if page_obj.has_previous %}
+      {#            <a href="?page=1">&laquo; first</a>#}
+      {#            <a href="?page={{ page_obj.previous_page_number }}">previous</a>#}
+            <span style="float: right">
+              <a class="btn btn-primary btn-sm" href="?page={{ page_obj.previous_page_number }}">Previous Page</a>
+            </span>
+            <br>
+          {% endif %}
 
-      {% for post in page_obj %}
-      <div class="posts">
-        {% if post.user.username == user.username %}
-          <div class="match">
-{#                ***                                                                         #}
-{#                class = "match" is used in the Javascript code to to identify posts         #}
-{#                by the authenticated user, and highlight the post for additional processing #}
+          {% for post in page_obj %}
+            <div class="posts">
+              {% if post.user.username == user.username %}
+                <div class="match">
+      {#                ***                                                                         #}
+      {#                class = "match" is used in the Javascript code to to identify posts         #}
+      {#                by the authenticated user, and highlight the post for additional processing #}
 
-            <table class = "table table1 table-sm">
-              <tr>
-                  <td><a href="{% url 'resume' post.user.id %}">
-                        <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>
-                      </a>
-                  </td>
-                  <td id="likes"><img src="{% static 'like-128.jpg' %}" alt="Likes"> &nbsp {{ post.likes }}</td>
-                  <td><span style="float: right">{{ post.timestamp }}</span></td>
-              </tr>
-            </table>
-            {{ post.body }}
-          </div>
-        {% else %}
-          <div class="nomatch">
-{#                *** Posts under this div do not belong to the authenticated user #}
-            <table class = "table table1 table-sm">
-            <tr>
-                <td><a href="{% url 'resume' post.user.id %}">
-                      <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>
-                    </a>
-                </td>
-                <td id="likes"><img src="{% static 'like-128.jpg' %}" alt="Likes"> &nbsp {{ post.likes }}</td>
-                <td><span style="float: right">{{ post.timestamp }}</span></td>
-            </tr>
-            </table>
-            {{ post.body }}
-          </div>
-        {% endif %}
-      </div>
-    {% endfor %}
+                  <table class = "table table1 table-sm">
+                    <tr>
+                        <td><a href="{% url 'resume' post.user.id %}">
+                              <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>
+                            </a>
+                        </td>
+                        <td id="likes"><img src="{% static 'like-128.jpg' %}" alt="Likes"> &nbsp {{ post.likes }}</td>
+                        <td><span style="float: right">{{ post.timestamp }}</span></td>
+                    </tr>
+                  </table>
+                  {{ post.body }}
+                </div>
+              {% else %}
+                <div class="nomatch">
+      {#                *** Posts under this div do not belong to the authenticated user #}
+                  <table class = "table table1 table-sm">
+                  <tr>
+                      <td><a href="{% url 'resume' post.user.id %}">
+                            <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>
+                          </a>
+                      </td>
+                      <td id="likes"><img src="{% static 'like-128.jpg' %}" alt="Likes"> &nbsp {{ post.likes }}</td>
+                      <td><span style="float: right">{{ post.timestamp }}</span></td>
+                  </tr>
+                  </table>
+                  {{ post.body }}
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
 
-    <span class="current">
-        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-    </span>
+          <span class="current">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+          </span>
 
-      {% if page_obj.has_next %}
-{#          <a href="?page={{ page_obj.next_page_number }}">next</a>#}
-{#          <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>#}
-        <span style="float: right">
-          <a class="btn btn-primary btn-sm" href="?page={{ page_obj.next_page_number }}">Next Page</a>
+          {% if page_obj.has_next %}
+      {#          <a href="?page={{ page_obj.next_page_number }}">next</a>#}
+      {#          <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>#}
+            <span style="float: right">
+              <a class="btn btn-primary btn-sm" href="?page={{ page_obj.next_page_number }}">Next Page</a>
+            </span>
+          {% endif %}
         </span>
-      {% endif %}
-    </span>
-  </div>
-</div>
-
+      </div>
     </div>
-
-{#  </div>#}
-
+  </div>
 {% endblock %}
 
 {% block script %}
     <script src="{% static 'network/resume.js' %}"></script>
+    <script src="{% static 'network/common.js' %}"></script>
 {% endblock %}

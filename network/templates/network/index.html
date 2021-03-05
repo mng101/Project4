@@ -52,18 +52,6 @@
                     </table>
                     {{ post.body }}
 
-{#                    <table class = "table table-sm">#}
-{#                      <tr>#}
-{#                        <td width="40%"><a href="{% url 'resume' post.user.id %}">#}
-{#                          <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>#}
-{#                          </a>#}
-{#                        </td>#}
-{#                        <td width="30%"><img src="{% static 'like-128.jpg' %}"> &nbsp {{ post.likes }}</td>#}
-{#                        <td width="30%"><span style="float: right">{{ post.timestamp }}</span></td>#}
-{#                      </tr>#}
-{#                    </table>#}
-{#                    {{ post.body }}#}
-
                   </div>
                 {% else %}
                   <div class="nomatch">
@@ -87,9 +75,9 @@
             </div>
           {% endfor %}
 
-                <span class="current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                </span>
+          <span class="current">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+          </span>
 
           {% if page_obj.has_next %}
 {#          <a href="?page={{ page_obj.next_page_number }}">next</a>#}
@@ -100,7 +88,7 @@
           {% endif %}
         </span>
       </div>
-        </div>
+    </div>
 
 {#  The following-posts view is only active when a user is authenticated #}
   <div id="following-post-view">
@@ -112,4 +100,5 @@
 
 {% block script %}
     <script src="{% static 'network/index.js' %}"></script>
+    <script src="{% static 'network/common.js' %}"></script>
 {% endblock %}
