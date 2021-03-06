@@ -39,7 +39,10 @@ textarea {
     table-layout: fixed;
 }
 
-td {
+table .w-15 { width:15% }
+table .w-60 { width:60% }
+
+.td {
     padding: 0;
     line-height: 1;
 }

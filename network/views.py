@@ -16,6 +16,7 @@ from django.views.generic import (View, TemplateView, ListView,
                                   UpdateView, )
 from django.views.generic.detail import SingleObjectMixin
 
+
 # The original index view is merged with the "allpost" view
 #
 # def index(request):
@@ -73,6 +74,7 @@ def register(request):
     else:
         return render(request, "network/register.html")
 
+
 # APIs Added to the original distribution code
 
 @csrf_exempt
@@ -95,7 +97,8 @@ def newpost(request):
     )
     post.save()
 
-    return JsonResponse({"message": "Post successful." }, status=201)
+    return JsonResponse({"message": "Post successful."}, status=201)
+
 
 # Views added to the original distribution code
 
@@ -106,18 +109,8 @@ def index(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    # try:
-    #     posts = paginator.page(page)
-    # except PageNotAnInteger:
-    #     posts = paginator.page(1)
-    # except EmptyPage:
-    #     posts = paginator.page(paginator.num_pages)
-
-    # Not using Javascript to render the Posts
-    #
-    # return JsonResponse([post.serialize() for post in posts], safe=False)
-
     return render(request, 'network/index.html', {'page_obj': page_obj})
+
 
 class ResumeDetailView(SingleObjectMixin, ListView):
     # model = Resume
@@ -137,57 +130,57 @@ class ResumeDetailView(SingleObjectMixin, ListView):
         context['resume'] = self.object
         return context
 
+
 @csrf_exempt
 @login_required
 def is_follower(request, pk):
-
     u1 = User.objects.get(id=pk)
     u2 = request.user
 
-    if (u1.follow_set.filter(user=u2).count() == 0):
+    if u1.follow_set.filter(user=u2).count() == 0:
         is_follower = False
     else:
         is_follower = True
 
     data = {
-        'is_follower' : is_follower,
+        'is_follower': is_follower,
     }
 
     return JsonResponse(data)
+
 
 @login_required()
 def follower_count(request, pk):
     # Return the count of followers for the user
 
     u1 = User.objects.get(id=pk)
-    u2 = request.user
-
     count = u1.follow_set.count()
 
     return JsonResponse(
         {'followers': count}
     )
 
+
 @login_required()
 def toggle_follow(request, pk):
     # Toggle the Follow button
 
-    u1 = User.objects.get(id=pk)        # Resume User
-    u2 = request.user                   # Authenticated User
+    u1 = User.objects.get(id=pk)  # Resume User
+    u2 = request.user  # Authenticated User
 
     # Find the follower if one exists
     f = u1.follow_set.filter(user=u2)
 
     # f = Follow.objects.create(user=u2, follow=u1)
-    print (f)
+    print(f)
 
-    if (f.count() == 0):
+    if f.count() == 0:
         # u2 does not follow u1. Create the object
         msg = Follow.objects.create(user=u2, follow=u1)
-        print ("Object created")
+        print("Object created")
     else:
         # u2 does follow u1. Delete the object created
         msg = f.delete()
 
     print(msg)
-    return JsonResponse({'message': 'Done' })
+    return JsonResponse({'message': 'Done'})

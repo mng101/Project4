@@ -1,16 +1,6 @@
 
 console.log('Javascript loaded');
 
-// document.addEventListener('DOMContentLoaded', function() {
-//     if (document.getElementById("username") !== null) {
-//         console.log("User is Authenticated");
-//         authenticated_view();
-//     } else {
-//         console.log("User is not Authenticated");
-//         unauthenticated_view();
-//     }
-// })
-
 document.addEventListener('DOMContentLoaded', function() {
     if (document.getElementById("username") !== null) {
         console.log("User is Authenticated");
@@ -24,18 +14,6 @@ function authenticated_view() {
 
     highlight_post();
 }
-
-// function unauthenticated_view() {
-//
-//     console.log('Loading Unauthenticated view');
-//     // document.querySelector('#new-post-view').style.display = 'none';
-//     // document.querySelector('#all-post-view').style.display = 'block';
-//     // document.querySelector('#following-post-view').style.display = 'none'
-//     //
-//     // console.log("Reading all posts - Unauth view");
-//     // Show all posts
-//     // show_all_posts();
-// }
 
 function follower_count(user) {
     console.log("Updating follower count")

@@ -21,24 +21,28 @@
 {#  Update the follower count     #}
     <script>follower_count({{ resume.user.id }})</script>
 
-{#  Table to display the Resume details    #}
   </table>
 
-    <table class="table table-borderless table-sm" width="75%">
-        <col style="width:25%">
-        <col style=width:50%">
-        <tr>
-            <td class="text-right">Full Name : </td>
-            <td><b> {{ resume.user.first_name }} {{ resume.user.last_name }}</b></td>
-        </tr>
-        <tr>
-            <td class="text-right">Company / Position :</td>
-          <td><b>{{ resume.company }} -- {{ resume.job }}</b></td>
-        </tr>
-        <tr>
-            <td class="text-right">Narative : </td>
-            <td>{{ resume.narative }}</td>
-        </tr>
+  {#  Table to display the Resume details    #}
+
+{#    <table class="table table-borderless table-sm" width="75%">#}
+{#        <col style="width:25%">#}
+{#        <col style=width:50%">#}
+    <table class="table table-borderless table-sm">
+{#      <col class="col-lg-2 col-sm-3">#}
+{#      <col class="col-lg-5 col-sm-6">#}
+      <tr>
+          <td class="w-15" align="right">Full Name : </td>
+          <td class="w-60"><b> {{ resume.user.first_name }} {{ resume.user.last_name }}</b></td>
+      </tr>
+      <tr>
+          <td align="right">Company / Position :</td>
+        <td><b>{{ resume.company }} -- {{ resume.job }}</b></td>
+      </tr>
+      <tr>
+          <td align="right">Narative : </td>
+          <td>{{ resume.narative }}</td>
+      </tr>
     </table>
 
 {#  Display all posts associated with the Resume    #}
