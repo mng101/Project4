@@ -10,6 +10,7 @@ urlpatterns = [
     path("register", views.register, name="register"),
 
     path("<int:pk>/", views.ResumeDetailView.as_view(), name="resume"),
+    path("following_posts/<int:pk>", views.FollowingPostListView.as_view(), name="following_posts"),
 
     # API Routes added to the distribution code
     #
@@ -18,8 +19,4 @@ urlpatterns = [
     path("follower_count/<int:pk>", views.follower_count, name="follower_count"),
     path("toggle_follow/<int:pk>", views.toggle_follow, name="toggle_follow"),
     #
-    # The "allpost" view is combined into the index view
-    # TODO - Cleanup before submission
-    # path("allpost", views.allpost, name="allposts"),
-    # path("followpost/<str:follow>", views.followpost, name="followpost"),
 ]

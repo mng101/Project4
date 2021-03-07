@@ -184,3 +184,18 @@ def toggle_follow(request, pk):
 
     print(msg)
     return JsonResponse({'message': 'Done'})
+
+
+class FollowingPostListView(LoginRequiredMixin, ListView):
+    model = Post
+    login_url = 'login'
+    paginate_by = 10
+    template_name = 'network/index.html'
+
+    def get_queryset(self):
+        # Find the users followed. This will return an array of tuples
+        users_followed = self.request.user.follows.all().values()
+        # Find the id of the users followed. Array of id
+        users_followed_id = [x['follow_id'] for x in users_followed]
+        # Find the posts for the users in the is list 'i'
+        return Post.objects.filter(user_id__in=users_followed_id)
