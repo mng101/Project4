@@ -4,33 +4,25 @@
 {% block body %}
 
   <div id="user-resume-view">
+  {#  Table to display the Resume header   #}
+    <table class="table table1 table-borderless table-sm">
+      <tr>
+        <td><b>{{ resume.user.first_name }}'s resume</b></td>
+        <td id="followers">Followers: </td>
+        <td>
+          {% if user.is_authenticated and user != resume.user %}
+            <button class="btn btn-primary btn=sm" id="follow_btn" onclick="toggle_follow({{ resume.user.id }})">Follow</button>
+            {# Update the lable for the Follow button #}
+            <script>set_btn_text({{ resume.user.id }})</script>
+          {% endif %}
+        </td>
+      </tr>
+      {#  Update the follower count     #}
+      <script>follower_count({{ resume.user.id }})</script>
+    </table>
 
-{#  Table to display the Resume header   #}
-  <table class="table table1 table-borderless table-sm">
-    <tr>
-      <td><b>{{ resume.user.first_name }}'s resume</b></td>
-      <td id="followers">Followers: </td>
-      <td>
-        {% if user.is_authenticated and user != resume.user %}
-          <button class="btn btn-primary btn=sm" id="follow_btn" onclick="toggle_follow({{ resume.user.id }})">Follow</button>
-          <script>set_btn_text({{ resume.user.id }})</script>
-        {% endif %}
-      </td>
-    </tr>
-
-{#  Update the follower count     #}
-    <script>follower_count({{ resume.user.id }})</script>
-
-  </table>
-
-  {#  Table to display the Resume details    #}
-
-{#    <table class="table table-borderless table-sm" width="75%">#}
-{#        <col style="width:25%">#}
-{#        <col style=width:50%">#}
+    {#  Table to display the Resume details    #}
     <table class="table table-borderless table-sm">
-{#      <col class="col-lg-2 col-sm-3">#}
-{#      <col class="col-lg-5 col-sm-6">#}
       <tr>
           <td class="w-15" align="right">Full Name : </td>
           <td class="w-60"><b> {{ resume.user.first_name }} {{ resume.user.last_name }}</b></td>
@@ -44,78 +36,85 @@
           <td>{{ resume.narative }}</td>
       </tr>
     </table>
+  </div>
 
-    {#  Display all posts associated with the Resume    #}
-    <div id="all-post-view">
-      <h6>{{ resume.user.first_name }}'s Posts</h6>
-      <div class="pagination">
-        <span class="step-links">
-          {% if page_obj.has_previous %}
+  {#  Display all posts associated with the Resume    #}
+  <div id="resume-user-post-view">
+    <h6>{{ resume.user.first_name }}'s Posts</h6>
+  </div>
+
+{% endblock %}
+
+  {# The pagination div that will display the paginated posts is loaded here from the layout.html #}
+
+{#      <div class="pagination">#}
+{#        <span class="step-links">#}
+{#          {% if page_obj.has_previous %}#}
       {#            <a href="?page=1">&laquo; first</a>#}
       {#            <a href="?page={{ page_obj.previous_page_number }}">previous</a>#}
-            <span style="float: right">
-              <a class="btn btn-primary btn-sm" href="?page={{ page_obj.previous_page_number }}">Previous Page</a>
-            </span>
-            <br>
-          {% endif %}
-
-          {% for post in page_obj %}
-            <div class="posts">
-              {% if post.user.username == user.username %}
-                <div class="match">
+{#            <span style="float: right">#}
+{#              <a class="btn btn-primary btn-sm" href="?page={{ page_obj.previous_page_number }}">Previous Page</a>#}
+{#            </span>#}
+{#            <br>#}
+{#          {% endif %}#}
+{##}
+{#          {% for post in page_obj %}#}
+{#            <div class="posts">#}
+{#              {% if post.user.username == user.username %}#}
+{#                <div class="match">#}
       {#                ***                                                                         #}
       {#                class = "match" is used in the Javascript code to to identify posts         #}
       {#                by the authenticated user, and highlight the post for additional processing #}
-
-                  <table class = "table table1 table-sm">
-                    <tr>
-                        <td><a href="{% url 'resume' post.user.id %}">
-                              <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>
-                            </a>
-                        </td>
-                        <td id="likes"><img src="{% static 'like-128.jpg' %}" alt="Likes"> &nbsp {{ post.likes }}</td>
-                        <td><span style="float: right">{{ post.timestamp }}</span></td>
-                    </tr>
-                  </table>
-                  {{ post.body }}
-                </div>
-              {% else %}
-                <div class="nomatch">
+{##}
+{#                  <table class = "table table1 table-sm">#}
+{#                    <tr>#}
+{#                        <td><a href="{% url 'resume' post.user.id %}">#}
+{#                              <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>#}
+{#                            </a>#}
+{#                        </td>#}
+{#                        <td id="likes"><img src="{% static 'like-128.jpg' %}" alt="Likes"> &nbsp {{ post.likes }}</td>#}
+{#                        <td><span style="float: right">{{ post.timestamp }}</span></td>#}
+{#                    </tr>#}
+{#                  </table>#}
+{#                  {{ post.body }}#}
+{#                </div>#}
+{#              {% else %}#}
+{#                <div class="nomatch">#}
       {#                *** Posts under this div do not belong to the authenticated user #}
-                  <table class = "table table1 table-sm">
-                  <tr>
-                      <td><a href="{% url 'resume' post.user.id %}">
-                            <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>
-                          </a>
-                      </td>
-                      <td id="likes"><img src="{% static 'like-128.jpg' %}" alt="Likes"> &nbsp {{ post.likes }}</td>
-                      <td><span style="float: right">{{ post.timestamp }}</span></td>
-                  </tr>
-                  </table>
-                  {{ post.body }}
-                </div>
-              {% endif %}
-            </div>
-          {% endfor %}
-
-          <span class="current">
-              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-          </span>
-
-          {% if page_obj.has_next %}
+{#                  <table class = "table table1 table-sm">#}
+{#                  <tr>#}
+{#                      <td><a href="{% url 'resume' post.user.id %}">#}
+{#                            <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>#}
+{#                          </a>#}
+{#                      </td>#}
+{#                      <td id="likes"><img src="{% static 'like-128.jpg' %}" alt="Likes"> &nbsp {{ post.likes }}</td>#}
+{#                      <td><span style="float: right">{{ post.timestamp }}</span></td>#}
+{#                  </tr>#}
+{#                  </table>#}
+{#                  {{ post.body }}#}
+{#                </div>#}
+{#              {% endif %}#}
+{#            </div>#}
+{#          {% endfor %}#}
+{##}
+{#          <span class="current">#}
+{#              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.#}
+{#          </span>#}
+{##}
+{#          {% if page_obj.has_next %}#}
       {#          <a href="?page={{ page_obj.next_page_number }}">next</a>#}
       {#          <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>#}
-            <span style="float: right">
-              <a class="btn btn-primary btn-sm" href="?page={{ page_obj.next_page_number }}">Next Page</a>
-            </span>
-          {% endif %}
-        </span>
-      </div>
-    </div>
-  </div>
-{% endblock %}
+{#            <span style="float: right">#}
+{#              <a class="btn btn-primary btn-sm" href="?page={{ page_obj.next_page_number }}">Next Page</a>#}
+{#            </span>#}
+{#          {% endif %}#}
+{#        </span>#}
+{#      </div>#}
+
+
 
 {% block script %}
-    <script src="{% static 'network/resume.js' %}"></script>
-    <script src="{% static 'network/common.js' %}"></script>
+    <script src="{% static 'network/index.js' %}"></script>
+{#    <script src="{% static 'network/resume.js' %}"></script>#}
+{#    <script src="{% static 'network/common.js' %}"></script>#}
 {% endblock %}

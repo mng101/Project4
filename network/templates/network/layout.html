@@ -36,7 +36,7 @@
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'following_posts' user.id %}" onclick="following_post_view()">Following</a>
+                        <a class="nav-link" href="{% url 'following_posts' user.id %}">Following</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
@@ -56,6 +56,79 @@
         <div class="container">
             {% block body %}
             {% endblock %}
+{#        </div>#}
+
+{##}
+        <div class="pagination">
+          <span class="step-links">
+            {% if page_obj.has_previous %}
+                  <a href="?page=1">&laquo; first</a>
+                  <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+              <span style="float: right">
+                <a class="btn btn-primary btn-sm" href="?page={{ page_obj.previous_page_number }}">Previous Page</a>
+              </span>
+              <br>
+            {% endif %}
+
+            {% for post in page_obj %}
+              <div class="posts">
+                {% if post.user.username == user.username %}
+                  <div class="match">
+                  {#  ***                                                                           #}
+                  {#  class = "match" is used in the Javascript code to to identify posts           #}
+                  {#  by the authenticated user, and highlight the post for additional processing   #}
+
+                    <table class = "table table1 table-sm">
+                      <tr>
+                          <td><a href="{% url 'resume' post.user.id %}">
+                                <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>
+                              </a>
+                          </td>
+                          <td id="likes"><img src="{% static 'like-128.jpg' %}" alt="Likes"> &nbsp {{ post.likes }}</td>
+                          <td><span style="float: right">{{ post.timestamp }}</span></td>
+                      </tr>
+                    </table>
+                    <div id="post_body" onclick="">
+                    {#  TODO - Add onclick function to authenticated users posts#}
+                      {{ post.body }}
+                    </div>
+
+                  </div>
+                {% else %}
+                  <div class="nomatch">
+                  {#  *** Posts under this div do not belong to the authenticated user              #}
+                    <table class = "table table1 table-sm">
+                    <tr>
+                        <td><a href="{% url 'resume' post.user.id %}">
+                              <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>
+                            </a>
+                        </td>
+                        <td id="likes"><img src="{% static 'like-128.jpg' %}" alt="Likes"> &nbsp {{ post.likes }}</td>
+                        <td><span style="float: right">{{ post.timestamp }}</span></td>
+                    </tr>
+                    </table>
+                    {{ post.body }}
+
+                  </div>
+                {% endif %}
+
+              </div>
+            {% endfor %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+              <span style="float: right">
+                <a class="btn btn-primary btn-sm" href="?page={{ page_obj.next_page_number }}">Next Page</a>
+              </span>
+            {% endif %}
+          </span>
         </div>
+        </div>
+
     </body>
 </html>

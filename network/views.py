@@ -149,7 +149,7 @@ def is_follower(request, pk):
     return JsonResponse(data)
 
 
-@login_required()
+# @login_required()
 def follower_count(request, pk):
     # Return the count of followers for the user
 
@@ -190,7 +190,7 @@ class FollowingPostListView(LoginRequiredMixin, ListView):
     model = Post
     login_url = 'login'
     paginate_by = 10
-    template_name = 'network/index.html'
+    template_name = 'network/following_post.html'
 
     def get_queryset(self):
         # Find the users followed. This will return an array of tuples
