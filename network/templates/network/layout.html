@@ -72,43 +72,30 @@
 
             {% for post in page_obj %}
               <div class="posts">
+                <table class = "table table1 table-sm">
+                  <tr>
+                      <td class="w-40"><a href="{% url 'resume' post.user.id %}">
+                            <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>
+                          </a>
+                      </td>
+                      <td class="w-30" style="text-align:left" id="likes">Votes:  <b>{{ post.num_votes }}</b>
+                        <button class="btn btn-primary btn-sm" id="vote_btn" onclick="">Vote</button>
+                      </td>
+                      <td class="w-30"><span style="float: right">{{ post.timestamp }}</span></td>
+                  </tr>
+                </table>
+
                 {% if post.user.username == user.username %}
                   <div class="match">
-                  {#  ***                                                                           #}
-                  {#  class = "match" is used in the Javascript code to to identify posts           #}
-                  {#  by the authenticated user, and highlight the post for additional processing   #}
-
-                    <table class = "table table1 table-sm">
-                      <tr>
-                          <td><a href="{% url 'resume' post.user.id %}">
-                                <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>
-                              </a>
-                          </td>
-                          <td id="likes"><img src="{% static 'like-128.jpg' %}" alt="Likes"> &nbsp {{ post.likes }}</td>
-                          <td><span style="float: right">{{ post.timestamp }}</span></td>
-                      </tr>
-                    </table>
-                    <div id="post_body" onclick="">
-                    {#  TODO - Add onclick function to authenticated users posts#}
-                      {{ post.body }}
-                    </div>
-
+                    {#  ***                                                                           #}
+                    {#  class = "match" is used in the Javascript code to to identify posts           #}
+                    {#  by the authenticated user, and highlight the post for additional processing   #}
+                    {#  TODO - Add onclick function to update users posts#}
+                    {{ post.body }}
                   </div>
                 {% else %}
                   <div class="nomatch">
-                  {#  *** Posts under this div do not belong to the authenticated user              #}
-                    <table class = "table table1 table-sm">
-                    <tr>
-                        <td><a href="{% url 'resume' post.user.id %}">
-                              <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>
-                            </a>
-                        </td>
-                        <td id="likes"><img src="{% static 'like-128.jpg' %}" alt="Likes"> &nbsp {{ post.likes }}</td>
-                        <td><span style="float: right">{{ post.timestamp }}</span></td>
-                    </tr>
-                    </table>
                     {{ post.body }}
-
                   </div>
                 {% endif %}
 

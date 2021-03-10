@@ -9,12 +9,12 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import User, Post, Resume, Follow
-
+from .models import User, Post, Resume, Follow, Vote
 from django.views.generic import (View, TemplateView, ListView,
                                   DetailView, CreateView, DeleteView,
                                   UpdateView, )
 from django.views.generic.detail import SingleObjectMixin
+from django.db.models import Count
 
 
 # The original index view is merged with the "allpost" view
@@ -103,7 +103,9 @@ def newpost(request):
 # Views added to the original distribution code
 
 def index(request):
-    all_posts = Post.objects.all().order_by('-timestamp')
+    # all_posts = Post.objects.all().order_by('-timestamp')
+    # order by is not required. Added meta class to the model
+    all_posts = Post.objects.annotate(num_votes=Count("vote")).order_by('-timestamp')
 
     paginator = Paginator(all_posts, 10)
     page_number = request.GET.get('page')
