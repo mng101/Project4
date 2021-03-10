@@ -78,8 +78,14 @@
                             <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>
                           </a>
                       </td>
-                      <td class="w-30" style="text-align:left" id="likes">Votes:  <b>{{ post.num_votes }}</b>
-                        <button class="btn btn-primary btn-sm" id="vote_btn" onclick="">Vote</button>
+                      <td class="w-30" style="text-align:left" id="likes">Votes:  <b>{{ post.num_votes }}  </b>
+                        {% if user.is_authenticated %}
+                          {% if post.has_my_vote == None %}
+                            <button class="btn btn-outline-danger btn-sm" id="vote_btn" onclick=""> Vote Down</button>
+                          {% else %}
+                            <button class="btn btn-outline-primary btn-sm" id="vote_btn" onclick="toggle_vote(this, {{ post.id }}"> Vote Up</button>
+                          {% endif %}
+                        {% endif %}
                       </td>
                       <td class="w-30"><span style="float: right">{{ post.timestamp }}</span></td>
                   </tr>

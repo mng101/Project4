@@ -17,11 +17,11 @@ class Post(models.Model):
     timestamp = models.DateTimeField(default=timezone.now)
     body = models.TextField(blank=False)
 
-    def __str__(self):
-        return f"{self.user} - {self.timestamp} - {self.body}"
-
     class Meta:
         ordering = ["-timestamp"]
+
+    def __str__(self):
+        return f"{self.user} - {self.timestamp} - {self.body}"
 
 
 class Resume(models.Model):
