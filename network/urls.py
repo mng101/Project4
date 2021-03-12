@@ -18,5 +18,6 @@ urlpatterns = [
     path("is_follower/<int:pk>", views.is_follower, name="follower"),
     path("follower_count/<int:pk>", views.follower_count, name="follower_count"),
     path("toggle_follow/<int:pk>", views.toggle_follow, name="toggle_follow"),
+    path("toggle_vote/<int:pk>", views.toggle_vote, name="toggle_vote"),
     #
 ]

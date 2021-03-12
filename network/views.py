@@ -136,8 +136,11 @@ class ResumeDetailView(SingleObjectMixin, ListView):
         self.object = self.get_object(queryset=Resume.objects.all())
         return super().get(request, *args, **kwargs)
 
+    # def get_queryset(self):
+    #     return self.object.user.posts.all().order_by('-timestamp')
+
     def get_queryset(self):
-        return self.object.user.posts.all().order_by('-timestamp')
+        return utils.enrich(self.request, self.object.user.posts.all().order_by('-timestamp'))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -212,4 +215,49 @@ class FollowingPostListView(LoginRequiredMixin, ListView):
         # Find the id of the users followed. Array of id
         users_followed_id = [x['follow_id'] for x in users_followed]
         # Find the posts for the users in the is list 'i'
-        return Post.objects.filter(user_id__in=users_followed_id)
+        return utils.enrich(self.request, Post.objects.filter(user_id__in=users_followed_id))
+
+
+@login_required()
+def toggle_vote(request, pk):
+    # Toggle the Vote button
+
+    u1 = request.user                       # Authenticated User
+    p1 = Post.objects.get(id=pk)            # Post owner
+
+    # TODO - Raise error if u1 == p1.user.id
+
+    v1 = p1.vote_set.filter(user=u1)
+
+    if v1.count() == 0:
+        # u1 has not voted for the post p1
+        msg = Vote.objects.create(user=u1, like=p1)
+        action = 'created'
+        print("object created")
+    else:
+        # u1 has voted for p1. Delete the vote
+        action = 'deleted'
+        msg = v1.delete()
+    print (msg)
+
+    votes = p1.vote_set.count()
+    print(votes)
+
+    # data = ({'votes': votes}, {'action': action},)
+    data = {'votes': votes, 'action': action, }
+
+    return JsonResponse(data)
+
+
+
+# @login_required
+def vote_count(request, pk):
+    # Return the count of votes for the post. Call this view from the toggle_vote function in the Javascript to
+    # confirm the Vote model is correctly updated
+
+    p1 = Post.objects.get(id=pk)
+    count = p1.vote_set.count()
+
+    return JsonResponse(
+        {'votes': count}
+    )

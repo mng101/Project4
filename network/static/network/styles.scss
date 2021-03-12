@@ -11,7 +11,8 @@ textarea {
     height: 100px;
     margin: 5px;
     padding: 10px;
-    border: 1px solid black;
+    border: 3px solid black;
+    border: double;
 }
 
 .posts {
@@ -35,6 +36,7 @@ textarea {
     // margin: 0px;
     padding: 3px;
     border-collapse: collapse;
+    //border: 1px solid black;
     margin-bottom: 3px;
     table-layout: fixed;
 }
@@ -45,9 +47,9 @@ table .w-30 { width:30% }
 table .w-40 { width:40% }
 table .w-60 { width:60% }
 
-.table-sm td, table-sm th {
-    padding: .1rem;
-}
+//.table-sm td, table-sm th {
+//    padding: .1rem;
+//}
 
 .td {
     padding: 0;
@@ -58,8 +60,14 @@ table .w-60 { width:60% }
     max-height: 0;
 }
 
-#likes {
+#votes {
+    text-align: right;
+    //border: 1px solid black;
+}
+
+#vote-btn {
     text-align: center;
+    //border: 1px solid black;
 }
 
 #follow-btn {
