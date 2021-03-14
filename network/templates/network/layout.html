@@ -72,27 +72,14 @@
             {% endif %}
 
             {% for post in page_obj %}
-              <div class="posts">
+{#              <div class="posts">#}
+              <div id="posts">
                 <table class = "table table1 table-sm">
                   <tr>
                       <td class="w-40"><a href="{% url 'resume' post.user.id %}">
                             <b>{{ post.user.first_name }} {{ post.user.last_name }}</b>
                           </a>
                       </td>
-
-{#original code          #}
-{#                      <td class="w-30" style="text-align:left" id="likes">Votes:  <b>{{ post.num_votes }}  </b>#}
-{#                      If the user is authenticated and this is not the user's own post, show the toggle vote button #}
-{#                        {% if user.is_authenticated and user.id != post.user.id %}#}
-{#                          The toggle vote button label depends on whether or not the user has voted for the post    #}
-{#                          {% if post.has_my_vote == None %}#}
-{#                            <button class="btn btn-outline-primary btn-sm" id="vote_btn" onclick="toggle_vote(this, {{ post.id }})"> Vote Down</button>#}
-{#                          {% else %}#}
-{#                            <button class="btn btn-outline-primary btn-sm" id="vote_btn" onclick="toggle_vote(this, {{ post.id }})"> Vote Up</button>#}
-{#                          {% endif %}#}
-{#                        {% endif %}#}
-{#                      </td>#}
-{#Original code ends#}
 
                       <td class="w-15" style="text-align: right" id="votes">Votes:  <b>{{ post.num_votes }}</b>&nbsp</td>
                       <td class="w-10" style="text-align: center" id="vote-btn">
@@ -110,19 +97,22 @@
                 </table>
 
                 {% if post.user.username == user.username %}
-                  <div class="match" onclick="update_post(this, {{ post.id }})">
-                    {#  ***                                                                           #}
-                    {#  class = "match" is used in the Javascript code to to identify posts           #}
-                    {#  by the authenticated user, and highlight the post for additional processing   #}
-                    {#  TODO - Add onclick function to update users posts#}
-                    {{ post.body }}
+                  <div id="special">
+                    <div class="match" onclick="show_post_form(this, {{ post.id }})">
+                      {#  ***                                                                           #}
+                      {#  class = "match" is used in the Javascript code to to identify posts           #}
+                      {#  by the authenticated user, and highlight the post for additional processing   #}
+                      {#  TODO - Add onclick function to update users posts#}
+                      {{ post.body }}
+  {#                    Add a placehoder tag that willbe used to show the post update form   #}
+  {#                    <div id="placeholder"></div>#}
+                    </div>
                   </div>
                 {% else %}
                   <div class="nomatch">
                     {{ post.body }}
                   </div>
                 {% endif %}
-
               </div>
             {% endfor %}
 

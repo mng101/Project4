@@ -171,11 +171,12 @@ def follower_count(request, pk):
     # Return the count of followers for the user
 
     u1 = User.objects.get(id=pk)
-    count = u1.follow_set.count()
+    followers = u1.follow_set.count()
+    follows = u1.follows.count()
 
-    return JsonResponse(
-        {'followers': count}
-    )
+    data = {'followers': followers, 'follows': follows,}
+
+    return JsonResponse(data)
 
 
 @login_required()
@@ -222,8 +223,8 @@ class FollowingPostListView(LoginRequiredMixin, ListView):
 def toggle_vote(request, pk):
     # Toggle the Vote button
 
-    u1 = request.user                       # Authenticated User
-    p1 = Post.objects.get(id=pk)            # Post owner
+    u1 = request.user  # Authenticated User
+    p1 = Post.objects.get(id=pk)  # Post owner
 
     # TODO - Raise error if u1 == p1.user.id
 
@@ -238,7 +239,7 @@ def toggle_vote(request, pk):
         # u1 has voted for p1. Delete the vote
         action = 'deleted'
         msg = v1.delete()
-    print (msg)
+    print(msg)
 
     votes = p1.vote_set.count()
     print(votes)
@@ -247,7 +248,6 @@ def toggle_vote(request, pk):
     data = {'votes': votes, 'action': action, }
 
     return JsonResponse(data)
-
 
 
 # @login_required

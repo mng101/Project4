@@ -59,9 +59,10 @@ function follower_count(user) {
     fetch(`${BASE_URL}/follower_count/${user}`)
         .then(response => response.json())
         .then (data => {
-            count = data.followers
-            console.log("Follower count is: ", count)
-            element.innerHTML = "Followers:  <b>" + `${count}` + "</b>"
+            c1 = data.followers
+            c2 = data.follows
+            console.log("Follower count is: ", c1, c2)
+            element.innerHTML = "Follows: <b>" + `${c2}` + "</b>&nbsp Followers: <b>" + `${c1}` + "</b>"
         })
         .then (result => { return (result)})
         .catch (error => {
@@ -157,9 +158,40 @@ function toggle_vote(element, post) {
         })
 }
 
-function update_post(element, post_id) {
-    console.log("Update Post selected: ", post_id)
-    console.log("Element: ", element)
-    //
+function show_post_form(element, post_id) {
+    console.log("Showing Post Update form: ", element, post_id)
+
     // TODO - Complete this function
+
+    e = element
+    postbody = e.innerText
+
+//    Build a form, with textarea to update the post body
+    a1 = document.createElement('div')
+    a2 = document.createElement("form")
+    a3 = document.createElement("textarea")
+    a3.classList.add("form-control")
+    a3.innerText = postbody
+    a4 = document.createElement('input')
+    a4.type = "submit"
+    a4.value = "Update Post"
+    a4.onclick = "update_post()"
+    //
+    a4.className = "btn"
+    a4.className += " btn-primary"
+    a4.className += " btn-sm"
+
+    a2.appendChild(a3)
+    a2.appendChild(a4)
+    a1.appendChild((a2))
+
+    // Hide the Post element and show the Post Edit form
+    e.style.display="none"
+    e.parentElement.insertAdjacentElement('beforebegin', a1)
+
+    console.log("Form inserted into the page")
+}
+
+function update_post() {
+    console.log("Updating Post")
 }

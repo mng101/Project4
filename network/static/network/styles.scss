@@ -9,14 +9,16 @@ html {
 
 textarea {
     height: 100px;
-    margin: 5px;
-    padding: 10px;
-    border: 3px solid black;
-    border: double;
+    // margin: 5px;
+    // padding: 10px;
+    // padding-right: 5px !important;
+    // border: 3px solid black;
+    // border: double;
+    box-sizing: border-box;
 }
 
-.posts {
-    max-height: 100px;
+#posts {
+    max-height: 300px;
     overflow-y: auto;
     padding: 3px;
     margin: 5px;
@@ -37,8 +39,10 @@ textarea {
     padding: 3px;
     border-collapse: collapse;
     //border: 1px solid black;
+    //min-height: 100px;
+    overflow: auto;
     margin-bottom: 3px;
-    table-layout: fixed;
+    //table-layout: fixed;
 }
 
 table .w-15 { width:15% }
