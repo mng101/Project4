@@ -9,11 +9,6 @@ html {
 
 textarea {
     min-height: 100px;
-    // margin: 5px;
-    // padding: 10px;
-    // padding-right: 5px !important;
-    // border: 3px solid black;
-    // border: double;
     box-sizing: border-box;
 }
 
@@ -35,14 +30,10 @@ textarea {
 
 // Style for table1 - 1 row header for each posts and 1 row header for Resume page
 .table1 {
-    // margin: 0px;
     padding: 3px;
     border-collapse: collapse;
-    //border: 1px solid black;
-    //min-height: 100px;
     overflow: auto;
     margin-bottom: 3px;
-    //table-layout: fixed;
 }
 
 table .w-15 { width:15% }
@@ -50,10 +41,6 @@ table .w-20 { width:20% }
 table .w-30 { width:30% }
 table .w-40 { width:40% }
 table .w-60 { width:60% }
-
-//.table-sm td, table-sm th {
-//    padding: .1rem;
-//}
 
 .td {
     padding: 0;
@@ -66,23 +53,12 @@ table .w-60 { width:60% }
 
 #votes {
     text-align: right;
-    //border: 1px solid black;
 }
 
 #vote-btn {
     text-align: center;
-    //border: 1px solid black;
 }
 
 #follow-btn {
     text-align: right;
 }
-
-// Table background even rows
-//tr:nth-child(even) {
-//  background: #eee;
-//}
-// Table backgroup odd rows
-//tr:nth-child(odd) {
-//  background: #ddd;
-//}

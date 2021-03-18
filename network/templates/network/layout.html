@@ -61,10 +61,6 @@
         <div class="pagination">
           <span class="step-links">
             {% if page_obj.has_previous %}
-{#              #}
-{#    TODO Cleanup code commented out#}
-{#                  <a href="?page=1">&laquo; first</a>#}
-{#                  <a href="?page={{ page_obj.previous_page_number }}">previous</a>#}
               <span style="float: right">
                 <a class="btn btn-primary btn-sm" href="?page={{ page_obj.previous_page_number }}">Previous Page</a>
               </span>
@@ -72,7 +68,6 @@
             {% endif %}
 
             {% for post in page_obj %}
-{#              <div class="posts">#}
               <div id="posts">
                 <table class = "table table1 table-sm">
                   <tr>
@@ -97,18 +92,13 @@
                 </table>
 
                 {% if post.user.username == user.username %}
-{#                  <div id="special">#}
                     <div class="match" onclick="show_post_form(this, {{ post.id }})">
                       {#  ***                                                                           #}
                       {#  class = "match" is used in the Javascript code to to identify posts           #}
                       {#  by the authenticated user, and highlight the post for additional processing   #}
                       {#  TODO - Add onclick function to update users posts#}
                       {{ post.body }}
-  {#                    Add a placehoder tag that will be used to show the post update form   #}
-  {#                    <div id="placeholder"></div> #}
-{#                      PLACEHOLDER TAG NOT REQUIRED. DELETE THIS COMMENT  #}
                     </div>
-{#                  </div>#}
                 {% else %}
                   <div class="nomatch">
                     {{ post.body }}
@@ -117,13 +107,7 @@
               </div>
             {% endfor %}
 
-{#            <span class="current">#}
-{#                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.#}
-{#            </span>#}
-
             {% if page_obj.has_next %}
-{#                <a href="?page={{ page_obj.next_page_number }}">next</a>#}
-{#                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>#}
               <span style="float: right">
                 <a class="btn btn-primary btn-sm" href="?page={{ page_obj.next_page_number }}">Next Page</a>
               </span>

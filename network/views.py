@@ -118,15 +118,6 @@ def updatepost(request):
     except:
         return JsonResponse({"error": "Post does not exist, or is not your own"})
 
-    # post_owner = Post.objects.get(id=post_id).user
-    # if request.user != post_owner:
-    #     return JsonResponse({"error": "Users can only update their own Posts"}, status=400)
-
-    # post = Post(
-    #     "id" = post_id,
-    #     "body" = post_body,
-    # )
-
     post.body = data[0]["post_body"]
 
     print("Saving post")
@@ -136,22 +127,7 @@ def updatepost(request):
     return JsonResponse({"message": "Update successful."}, status=201)
 
 
-# Views added to the original distribution code
-
 def index(request):
-    # all_posts = Post.objects.all().order_by('-timestamp')
-    # order by is not required. Added meta class to the model
-    # all_posts = Post.objects.annotate(num_votes=Count("vote")).order_by('-timestamp')
-
-    # u1 = request.user
-    # print("User is: ", u1)
-    #
-    # v1 = Vote.objects.filter(user=u1).values_list('like')
-    #
-    # all_posts = all_posts.annotate(has_my_vote = Case (
-    #     When(id__in=v1), then=Value(True), default=Value(False), output_field=BooleanField()
-    # ))
-
     all_posts = utils.enrich(request, Post.objects.all().order_by('-timestamp'))
 
     paginator = Paginator(all_posts, 10)
@@ -170,9 +146,6 @@ class ResumeDetailView(SingleObjectMixin, ListView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object(queryset=Resume.objects.all())
         return super().get(request, *args, **kwargs)
-
-    # def get_queryset(self):
-    #     return self.object.user.posts.all().order_by('-timestamp')
 
     def get_queryset(self):
         return utils.enrich(self.request, self.object.user.posts.all().order_by('-timestamp'))
@@ -234,7 +207,6 @@ def toggle_follow(request, pk):
     else:
         # u2 does follow u1. Delete the object created
         msg = f.delete()
-
     print(msg)
     return JsonResponse({'message': 'Done'})
 
@@ -251,7 +223,7 @@ class FollowingPostListView(LoginRequiredMixin, ListView):
         # Find the id of the users followed. Array of id
         users_followed_id = [x['follow_id'] for x in users_followed]
         # Find the posts for the users in the is list 'i'
-        return utils.enrich(self.request, Post.objects.filter(user_id__in=users_followed_id))
+        return utils.enrich(self.request, Post.objects.filter(user_id__in=users_followed_id).order_by('-timestamp'))
 
 
 @login_required()
@@ -265,8 +237,6 @@ def toggle_vote(request, pk):
     #
     if p1.user == request.user:
         return JsonResponse({"error": "Users cannot vote their own Posts"}, status=400)
-
-    # TODO - Raise error if u1 == p1.user.id
 
     v1 = p1.vote_set.filter(user=u1)
 
@@ -290,7 +260,8 @@ def toggle_vote(request, pk):
     return JsonResponse(data)
 
 
-# @login_required
+# vote_count does not require a user be authenticated.
+#
 def vote_count(request, pk):
     # Return the count of votes for the post. Call this view from the toggle_vote function in the Javascript to
     # confirm the Vote model is correctly updated

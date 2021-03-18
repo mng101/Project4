@@ -12,7 +12,7 @@ function highlight_post() {
     const elements = document.getElementsByClassName("match")
     console.log(elements);
 
-    for (var i = 0; i < elements.length; i++) {
+    for ( let i = 0; i < elements.length; i++) {
         // console.log("Processing element: ", i);
         elements[i].style.background = "#b0f6f6";
     }
@@ -54,13 +54,13 @@ function follower_count(user) {
     console.log("Updating follower count")
     let element = document.getElementById("followers")
 
-    BASE_URL = window.location.protocol + "//" + window.location.host
+    let BASE_URL = window.location.protocol + "//" + window.location.host
 
     fetch(`${BASE_URL}/follower_count/${user}`)
         .then(response => response.json())
         .then (data => {
-            c1 = data.followers
-            c2 = data.follows
+            let c1 = data.followers
+            let c2 = data.follows
             console.log("Follower count is: ", c1, c2)
             element.innerHTML = "Follows: <b>" + `${c2}` + "</b>&nbsp Followers: <b>" + `${c1}` + "</b>"
         })
@@ -70,7 +70,7 @@ function follower_count(user) {
         });
 }
 
-// Set the text for the Follow button
+// Set the text for the Follow button on Resume page
 //
 function set_btn_text(user) {
     console.log("Setting buttton text")
@@ -123,6 +123,7 @@ function toggle_follow(user) {
 
 // Toggle the Vote button on the paginated posts
 //
+
 function toggle_vote(element, post) {
     console.log("Toggle Vote button : ", post)
     console.log("Element is: ", element)
@@ -135,8 +136,8 @@ function toggle_vote(element, post) {
     fetch(`${BASEURL}/toggle_vote/${post}`)
         .then(response => response.json())
         .then (data => {
-            votes = data.votes
-            action = data.action
+            let votes = data.votes
+            let action = data.action
             console.log("Data :", votes, action)
         })
         .then (error => {
@@ -145,9 +146,10 @@ function toggle_vote(element, post) {
         .finally ( function() {
             console.log("Finally section")
             // Update the post header with the new count and button
-            // The vote count is in the table cell to the left of the Vote button
-            c1 = vote_btn.parentElement.previousElementSibling
-            c1.innerHTML = "Votes: <b>" + votes + "</b> "
+            // The vote count is in the table cell to the left (previous) of the Vote button
+            let c1 = vote_btn.parentElement.previousElementSibling
+            c1.innerHTML = "Votes: <b>" + `${votes}` + "</b> "
+            let action;
             if (action === 'created') {
                 console.log(post, " Voted Up")
                 vote_btn.innerText = "Vote Down"
@@ -161,16 +163,14 @@ function toggle_vote(element, post) {
 function update_post(element, post_id) {
     console.log("Updating Post")
 
-    // e = document.getElementById('updated_post')
-
-    post_body = document.getElementById('updated_post').value
+    let post_body = document.getElementById('updated_post').value
 
     if (post_body.length === 0) {
         console.log("Cannot submit an empty Post")
         alert("Cannot submit an empty post");
     }
 
-    updatedpost = [{"post_id": post_id, "post_body": post_body}];
+    let updatedpost = [{"post_id": post_id, "post_body": post_body}];
 
     fetch('/updatepost', {
         method: 'PUT',
@@ -179,20 +179,16 @@ function update_post(element, post_id) {
         .then(response => {
             console.log('Response', response);
         })
-        // .then (result => {
-        //     console.log('Result:', result);
-        // })
         .catch (error => {
             console.log("Error: ", error);
         })
         .finally ( function() {
             console.log("Finally section of Update Post ")
-            update_form = element.parentElement.parentElement
-            post_display = update_form.nextSibling
+            let update_form = element.parentElement.parentElement
+            let post_display = update_form.nextSibling
         //  Update the display with the updated post
             post_display.innerText = post_body
-
-        //  Remove the post update form, sand display the update post body
+        //  Remove the post update form, and display the update post body
             update_form.remove()
             post_display.style.display = "block"
         })
@@ -201,17 +197,17 @@ function update_post(element, post_id) {
 function show_post_form(element, post_id) {
     console.log("Showing Post Update form: ", element, post_id)
 
-    e = element
-    postbody = e.innerText
+    let e = element
+    let postbody = e.innerText
 
 //    Build a form, with textarea to update the post body
-    a1 = document.createElement('div')
-    a2 = document.createElement("form")
-    a3 = document.createElement("textarea")
+    let a1 = document.createElement('div')
+    let a2 = document.createElement("form")
+    let a3 = document.createElement("textarea")
     a3.classList.add("form-control")
     a3.setAttribute("id", "updated_post")
     a3.innerText = postbody         // Paste the post body in the textarea
-    a4 = document.createElement('input')
+    let a4 = document.createElement('input')
     // a4.type = "submit"
     a4.type = "button"
     a4.value = "Update Post"
@@ -232,18 +228,4 @@ function show_post_form(element, post_id) {
     // e.parentElement.insertAdjacentElement('beforebegin', a1)
     e.insertAdjacentElement('beforebegin', a1)
     console.log("Form inserted into the page")
-
-    // input = document.createElement('form')
-    // input.setAttribute('id', 'post_update_form')
-    //
-    // s1 = '<textarea className="form-control"></textarea> '
-    // s1 += '<input type="submit" value="Post" onclick="update_post(this, post_id)" class="btn btn-primary btn-sm"'
-    //
-    // // input.append(s1)
-    // input.innerHTML = s1
-    //
-    // e.parentElement.insertAdjacentElement('beforebegin', input)
-    //
-    // input.style.display = "block"
-    // e.style.display = "none"
 }

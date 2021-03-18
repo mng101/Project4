@@ -7,7 +7,6 @@
   {% if user.is_authenticated %}
     <div id="new-post-view">
       {#  This view will be active only when the user is authenticated       #}
-      {#  In addition, one of the following 2 views will be active - TODO DELETE          #}
       <h6>New Post</h6>
       <form id="post-form">
         <label for="post-body"></label>
@@ -24,15 +23,8 @@
     {% endif %}
   </div>
 
-{#  The following-posts view is only active when a user is authenticated #}
-{#  <div id="following-post-view">#}
-{#    <h5>Following Posts</h5>#}
-    {#  TODO - Add elements to display all posts from users being followed#}
-{#  </div>#}
-
 {% endblock %}
 
 {% block script %}
     <script src="{% static 'network/index.js' %}"></script>
-{#    <script src="{% static 'network/common.js' %}"></script>#}
 {% endblock %}
