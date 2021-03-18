@@ -15,6 +15,7 @@ urlpatterns = [
     # API Routes added to the distribution code
     #
     path("newpost", views.newpost, name="newpost"),
+    path("updatepost", views.updatepost, name="updatepost"),
     path("is_follower/<int:pk>", views.is_follower, name="follower"),
     path("follower_count/<int:pk>", views.follower_count, name="follower_count"),
     path("toggle_follow/<int:pk>", views.toggle_follow, name="toggle_follow"),

@@ -158,10 +158,48 @@ function toggle_vote(element, post) {
         })
 }
 
+function update_post(element, post_id) {
+    console.log("Updating Post")
+
+    // e = document.getElementById('updated_post')
+
+    post_body = document.getElementById('updated_post').value
+
+    if (post_body.length === 0) {
+        console.log("Cannot submit an empty Post")
+        alert("Cannot submit an empty post");
+    }
+
+    updatedpost = [{"post_id": post_id, "post_body": post_body}];
+
+    fetch('/updatepost', {
+        method: 'PUT',
+        body: JSON.stringify(updatedpost)
+    })
+        .then(response => {
+            console.log('Response', response);
+        })
+        // .then (result => {
+        //     console.log('Result:', result);
+        // })
+        .catch (error => {
+            console.log("Error: ", error);
+        })
+        .finally ( function() {
+            console.log("Finally section of Update Post ")
+            update_form = element.parentElement.parentElement
+            post_display = update_form.nextSibling
+        //  Update the display with the updated post
+            post_display.innerText = post_body
+
+        //  Remove the post update form, sand display the update post body
+            update_form.remove()
+            post_display.style.display = "block"
+        })
+}
+
 function show_post_form(element, post_id) {
     console.log("Showing Post Update form: ", element, post_id)
-
-    // TODO - Complete this function
 
     e = element
     postbody = e.innerText
@@ -171,12 +209,12 @@ function show_post_form(element, post_id) {
     a2 = document.createElement("form")
     a3 = document.createElement("textarea")
     a3.classList.add("form-control")
-    a3.innerText = postbody
+    a3.setAttribute("id", "updated_post")
+    a3.innerText = postbody         // Paste the post body in the textarea
     a4 = document.createElement('input')
-    a4.type = "submit"
+    // a4.type = "submit"
+    a4.type = "button"
     a4.value = "Update Post"
-    a4.onclick = "update_post()"
-    //
     a4.className = "btn"
     a4.className += " btn-primary"
     a4.className += " btn-sm"
@@ -185,13 +223,27 @@ function show_post_form(element, post_id) {
     a2.appendChild(a4)
     a1.appendChild((a2))
 
+    // Add Event Listener after appending all the Child elements
+    a4.addEventListener("click", function() {update_post(this, post_id);})
+    console.log("Event listener added")
+
     // Hide the Post element and show the Post Edit form
     e.style.display="none"
-    e.parentElement.insertAdjacentElement('beforebegin', a1)
-
+    // e.parentElement.insertAdjacentElement('beforebegin', a1)
+    e.insertAdjacentElement('beforebegin', a1)
     console.log("Form inserted into the page")
-}
 
-function update_post() {
-    console.log("Updating Post")
+    // input = document.createElement('form')
+    // input.setAttribute('id', 'post_update_form')
+    //
+    // s1 = '<textarea className="form-control"></textarea> '
+    // s1 += '<input type="submit" value="Post" onclick="update_post(this, post_id)" class="btn btn-primary btn-sm"'
+    //
+    // // input.append(s1)
+    // input.innerHTML = s1
+    //
+    // e.parentElement.insertAdjacentElement('beforebegin', input)
+    //
+    // input.style.display = "block"
+    // e.style.display = "none"
 }

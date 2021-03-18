@@ -56,5 +56,3 @@ class Vote(models.Model):
 
     class Meta:
         unique_together = ("user", "like")
-
-# TODO - class Vote

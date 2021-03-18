@@ -101,6 +101,41 @@ def newpost(request):
     return JsonResponse({"message": "Post successful."}, status=201)
 
 
+@csrf_exempt
+@login_required
+def updatepost(request):
+    # Post must be updated via  PUT request
+    if request.method != "PUT":
+        return JsonResponse({"error": "POST request required."}, status=400)
+
+    data = json.loads(request.body)
+    post_id = data[0]['post_id']
+    post_body = data[0]['post_body']
+
+    # Confirm the post being updated actually exists
+    try:
+        post = Post.objects.get(user=request.user, pk=post_id)
+    except:
+        return JsonResponse({"error": "Post does not exist, or is not your own"})
+
+    # post_owner = Post.objects.get(id=post_id).user
+    # if request.user != post_owner:
+    #     return JsonResponse({"error": "Users can only update their own Posts"}, status=400)
+
+    # post = Post(
+    #     "id" = post_id,
+    #     "body" = post_body,
+    # )
+
+    post.body = data[0]["post_body"]
+
+    print("Saving post")
+    msg = post.save()
+    # print(data.get(body))
+    print(msg)
+    return JsonResponse({"message": "Update successful."}, status=201)
+
+
 # Views added to the original distribution code
 
 def index(request):
@@ -174,7 +209,7 @@ def follower_count(request, pk):
     followers = u1.follow_set.count()
     follows = u1.follows.count()
 
-    data = {'followers': followers, 'follows': follows,}
+    data = {'followers': followers, 'follows': follows, }
 
     return JsonResponse(data)
 
@@ -225,6 +260,11 @@ def toggle_vote(request, pk):
 
     u1 = request.user  # Authenticated User
     p1 = Post.objects.get(id=pk)  # Post owner
+
+    # One final check for the user voting for their own post, just in case other checks have failed
+    #
+    if p1.user == request.user:
+        return JsonResponse({"error": "Users cannot vote their own Posts"}, status=400)
 
     # TODO - Raise error if u1 == p1.user.id
 

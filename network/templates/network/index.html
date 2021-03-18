@@ -7,18 +7,21 @@
   {% if user.is_authenticated %}
     <div id="new-post-view">
       {#  This view will be active only when the user is authenticated       #}
-      {#  In addition, one of the following 2 views will be active           #}
+      {#  In addition, one of the following 2 views will be active - TODO DELETE          #}
       <h6>New Post</h6>
       <form id="post-form">
         <label for="post-body"></label>
-          <textarea class="form-control" id="post-body" placeholder="Body"></textarea>
+          <textarea class="form-control" id="post-body" placeholder="Type New post here"></textarea>
           <input type="submit" value="Post" onclick="post_it()" class="btn btn-primary btn-sm" />
       </form>
     </div>
   {% endif %}
 
   <div id="all-post-view">
-    <h6>All Posts</h6>
+    <h5>All Posts</h5>
+    {% if user.is_authenticated %}
+      <span style="background-color: #b0f6f6">Note: Your ownposts are shaded in blue. Click on the post to update</span>
+    {% endif %}
   </div>
 
 {#  The following-posts view is only active when a user is authenticated #}

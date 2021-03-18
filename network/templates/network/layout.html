@@ -97,17 +97,18 @@
                 </table>
 
                 {% if post.user.username == user.username %}
-                  <div id="special">
+{#                  <div id="special">#}
                     <div class="match" onclick="show_post_form(this, {{ post.id }})">
                       {#  ***                                                                           #}
                       {#  class = "match" is used in the Javascript code to to identify posts           #}
                       {#  by the authenticated user, and highlight the post for additional processing   #}
                       {#  TODO - Add onclick function to update users posts#}
                       {{ post.body }}
-  {#                    Add a placehoder tag that willbe used to show the post update form   #}
-  {#                    <div id="placeholder"></div>#}
+  {#                    Add a placehoder tag that will be used to show the post update form   #}
+  {#                    <div id="placeholder"></div> #}
+{#                      PLACEHOLDER TAG NOT REQUIRED. DELETE THIS COMMENT  #}
                     </div>
-                  </div>
+{#                  </div>#}
                 {% else %}
                   <div class="nomatch">
                     {{ post.body }}
