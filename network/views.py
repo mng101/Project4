@@ -110,7 +110,7 @@ def updatepost(request):
 
     data = json.loads(request.body)
     post_id = data[0]['post_id']
-    post_body = data[0]['post_body']
+    # post_body = data[0]['post_body']
 
     # Confirm the post being updated actually exists
     try:
@@ -258,17 +258,3 @@ def toggle_vote(request, pk):
     data = {'votes': votes, 'action': action, }
 
     return JsonResponse(data)
-
-
-# vote_count does not require a user be authenticated.
-#
-def vote_count(request, pk):
-    # Return the count of votes for the post. Call this view from the toggle_vote function in the Javascript to
-    # confirm the Vote model is correctly updated
-
-    p1 = Post.objects.get(id=pk)
-    count = p1.vote_set.count()
-
-    return JsonResponse(
-        {'votes': count}
-    )

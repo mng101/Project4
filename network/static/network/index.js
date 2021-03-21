@@ -136,8 +136,8 @@ function toggle_vote(element, post) {
     fetch(`${BASEURL}/toggle_vote/${post}`)
         .then(response => response.json())
         .then (data => {
-            let votes = data.votes
-            let action = data.action
+            votes = data.votes
+            action = data.action
             console.log("Data :", votes, action)
         })
         .then (error => {
@@ -149,7 +149,6 @@ function toggle_vote(element, post) {
             // The vote count is in the table cell to the left (previous) of the Vote button
             let c1 = vote_btn.parentElement.previousElementSibling
             c1.innerHTML = "Votes: <b>" + `${votes}` + "</b> "
-            let action;
             if (action === 'created') {
                 console.log(post, " Voted Up")
                 vote_btn.innerText = "Vote Down"

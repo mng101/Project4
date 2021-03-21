@@ -80,6 +80,7 @@
                       <td class="w-10" style="text-align: center" id="vote-btn">
                         {% if user.is_authenticated and user.id != post.user.id %}
 {#                          The toggle vote button label depends on whether or not the user has voted for the post    #}
+{#                          'has_my-vote is set to 'None' if yes and 'False' if no                                    #}
                           {% if post.has_my_vote == None %}
                             <button class="btn btn-outline-primary btn-sm" id="vote_btn" onclick="toggle_vote(this, {{ post.id }})"> Vote Down</button>
                           {% else %}
@@ -96,7 +97,6 @@
                       {#  ***                                                                           #}
                       {#  class = "match" is used in the Javascript code to to identify posts           #}
                       {#  by the authenticated user, and highlight the post for additional processing   #}
-                      {#  TODO - Add onclick function to update users posts#}
                       {{ post.body }}
                     </div>
                 {% else %}
